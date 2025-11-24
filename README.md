@@ -46,3 +46,8 @@ Each module contains its own standalone Makefiles/CMakeLists.
 cd 01-hardware-sympathy
 g++ -O3 -pthread false_sharing.cpp -o bench
 ./bench
+```
+
+---
+
+Authored by Đào Phương Nam | VNU-UET
