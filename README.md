@@ -1,4 +1,4 @@
-# High-Performance Systems Lab ⚡
+# High-Performance Systems Lab
 
 ![Language](https://img.shields.io/badge/Language-C++20-blue?style=flat-square)
 ![Platform](https://img.shields.io/badge/Platform-Linux%20(Kernel%205.x+)-black?style=flat-square)
