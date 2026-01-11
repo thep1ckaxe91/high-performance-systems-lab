@@ -28,11 +28,11 @@ constexpr std::size_t hardware_destructive_interference_size = 64;
 using Clock = std::chrono::system_clock;
 
 constexpr int ITERATIONS = 1e7;
-constexpr int SIMULATIONS = 1000;
+constexpr int SIMULATIONS = 100;
 
 struct Unpadded
 {
-    std::atomic_int a{0};
+    std::atomic_int a{0}; //
     std::atomic_int b{0};
 };
 
@@ -110,6 +110,4 @@ int main()
 
     std::cout << "Over " << SIMULATIONS << " benchmark run each struct:\n";
     std::cout << "Avg Performance diff: " << avg_unpadded_time / avg_padded_time << "x faster\n";
-    std::cout << "Max Performance diff: " << max_unpadded_time / max_padded_time << "x faster\n";
-    std::cout << "Min Performance diff: " << min_unpadded_time / min_padded_time << "x faster\n";
 }
