@@ -3,7 +3,7 @@
 #include <atomic>
 #include <thread>
 #include <optional>
-#include <assert.h>
+#include "pin_thread.hpp"
 // headers
 template <typename T>
 class SPSC
@@ -14,6 +14,7 @@ class SPSC
 
     std::vector<T> buffer;
     bool full;
+
 public:
     SPSC(size_t capacity) : head(0), tail(0), buffer(capacity) {};
 
@@ -41,12 +42,12 @@ int main()
 {
     std::cout << "Size of SPSC: " << sizeof(SPSC<int>) << '\n';
 
-    int iteration;
-    size_t q_size;
+    int iteration = 1e9;
+    size_t q_size = 1000;
     std::cout << "Iteration: ";
-    std::cin >> iteration;
+    // std::cin >> iteration;
     std::cout << "Queue size: ";
-    std::cin >> q_size;
+    // std::cin >> q_size;
     SPSC<int> spsc{q_size};
 
     std::thread prod([&]()
@@ -55,16 +56,19 @@ int main()
                 while(!spsc.push(i)){
                     std::this_thread::yield();
                 } });
+    pin_thread(prod, 0);
 
     std::thread cons([&]()
                      {
+            uint64_t sum=0;
             for (int i = 0; i < iteration; i++)
             {
                 auto val = spsc.pop();
                 while(!val.has_value()) {std::this_thread::yield(); val = spsc.pop();}
-
-                std::cout << val.value() << '\n';
+                sum += val.value();
             } });
+
+    pin_thread(cons, 1);
 
     prod.join();
     cons.join();
